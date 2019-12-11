@@ -1,4 +1,8 @@
 arquivo = fopen('dados.txt','w');
+if ~isempty(instrfind)
+     fclose(instrfind);
+     delete(instrfind);
+end
 
 %Codigo de comunicacao com as cameras
  [cam1, cam2] = connectStereoCams;
@@ -9,7 +13,7 @@ arquivo = fopen('dados.txt','w');
 
  fopen(s);
 
-qntd = 1000;
+qntd = 50;
 
 [pos1,pos2,pos3,pos4] = generate(qntd);
 
