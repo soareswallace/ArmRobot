@@ -8,8 +8,8 @@ if ~isempty(instrfind)
      fclose(instrfind);
      delete(instrfind);
 end
-%s = serial('/dev/tty.usbserial-AI069KTW', 'BaudRate', 9600);
-s = serial('/dev/ttyUSB0', 'BaudRate', 9600);
+s = serial('/dev/tty.usbserial-AI069KTW', 'BaudRate', 9600);
+% s = serial('/dev/ttyUSB0', 'BaudRate', 9600);
 fclose(s);
 
 %%
@@ -58,8 +58,8 @@ id_arq = fopen(nome_arq, 'wt');
 
 %comunica��o inicial
 
-%s = serial('/dev/tty.usbserial-AI069KTW', 'BaudRate', 9600);
-s = serial('/dev/ttyUSB0', 'BaudRate', 9600);
+s = serial('/dev/tty.usbserial-AI069KTW', 'BaudRate', 9600);
+% s = serial('/dev/ttyUSB0', 'BaudRate', 9600);
 fopen(s);
 
 % Quantidade de posicoes geradas no gerador
@@ -77,7 +77,7 @@ writePosition(s, pos4(a));
 %fscanf(s)
 
 
-while(a<quant)
+while(a<qtd)
     writePosition(s, pos1(a)); %fwrite(serialObject, pos1S, 'int8'); %positionSet()
     writePosition(s, pos2(a));
     writePosition(s, pos3(a));
