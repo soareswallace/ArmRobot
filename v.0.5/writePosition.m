@@ -1,5 +1,3 @@
-% Josenildo Vicente - jva@cin.ufpe.br 
-
 function [signalPos,pos1,pos2] = writePosition(serialObject, goalPos)
 
     %   signalPos = 0 -> numero negativo  || signalPos = 1 -> numero positivo/zero

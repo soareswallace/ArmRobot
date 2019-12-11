@@ -15,14 +15,14 @@ function vetorPos = triangular(stat1, stat2, stereoParams)
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hywre Cesar - Novembro 2018
 % www.fb.com.br/hycesar
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%4%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 vetorPos = zeros(1,3);
 % As duas câmeras detectaram o ponto?
 if ~isempty(stat1) && ~isempty(stat2) && ~isempty(stereoParams)
     tol = max(stat1.EquivDiameter, stat2.EquivDiameter);
     % É uma distância válida?
-    if stat1.Centroid - stat2.Centroid < tol
+    if stat1.Centroid - stat2.Centroid < tol*4
         %triangulação: descobrir a distancia com a calibração anterior.
             vetorPos = triangulate(stat1.Centroid, stat2.Centroid, stereoParams);
     else

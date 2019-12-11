@@ -1,81 +1,81 @@
 function [params] = quickStereoCalibration(cam1, cam2)
-    %
-    % function [params] = quickStereoCalibration(cam1, cam2)
-    %
-    % Essa funï¿½ï¿½o ï¿½ usada para rapidamente calibrar quando na primeira vez e 
-    % quando necessï¿½rio.
-    % ARGUMENTO: 
-    % cam1 e cam2 a serem calibradas.
-    % ALGORITMO:
-    % Utiliza sï¿½rie de funï¿½ï¿½es de calibraï¿½ï¿½o.
-    % RETORNO:
-    % params sï¿½o parï¿½metros da camera para utilizar triangulaï¿½ï¿½o, depois.
-    %
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Hywre Cesar - Novembro 2018
-    % www.fb.com.br/hycesar
-    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %%
-    %locais onde iram ser salvas as imagens
-    %Esses locais DEVEM existir, antes de executar o cï¿½digo.
-    path1 = strcat(pwd, '\cameraStereo1');
-    path2 = strcat(pwd, '\cameraStereo2');
+%
+% function [params] = quickStereoCalibration(cam1, cam2)
+%
+% Essa função é usada para rapidamente calibrar quando na primeira vez e 
+% quando necessário.
+% ARGUMENTO: 
+% cam1 e cam2 a serem calibradas.
+% ALGORITMO:
+% Utiliza série de funções de calibração.
+% RETORNO:
+% params são parâmetros da camera para utilizar triangulação, depois.
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hywre Cesar - Novembro 2018
+% www.fb.com.br/hycesar
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%locais onde iram ser salvas as imagens
+%Esses locais DEVEM existir, antes de executar o código.
+path1 = strcat(pwd, '\cameraStereo1');
+path2 = strcat(pwd, '\cameraStereo2');
+
+if ~exist(path1)
+    mkdir(path1)
+end
+
+if ~exist(path2)
+    mkdir(path2)
+end
+%%
+%laço
+n = 0;
+while n < 0            %~30 é qnt recomendada de imagens para calibração
+    img1 = snapshot(cam1);
+    img2 = snapshot(cam2);
+    n
+    imshowpair(img1, img2, 'montage');
     
-    if ~exist(path1)
-        mkdir(path1)
-    end
+    %colocar nas pastas 
+    filename1 = [strcat(path1, '\'), int2str(n), '.png'];
+    filename2 = [strcat(path2, '\'), int2str(n), '.png'];
     
-    if ~exist(path2)
-        mkdir(path2)
-    end
-    %%
-    %laï¿½o
-    n = 0;
-    while n < 50            %~30 ï¿½ qnt recomendada de imagens para calibraï¿½ï¿½o
-        img1 = snapshot(cam1);
-        img2 = snapshot(cam2);
-        n
-        imshowpair(img1, img2, 'montage');
-        
-        %colocar nas pastas 
-        filename1 = [strcat(path1, '\'), int2str(n), '.png'];
-        filename2 = [strcat(path2, '\'), int2str(n), '.png'];
-        
+
     
-        
-        %Guardar as fotos
-        imwrite(img1, fullfile(filename1));
-        imwrite(img2, fullfile(filename2));
-        
-        %Espera o usuï¿½rio se posicionar para a prï¿½xima foto
-        %Tempo baixo causa borrado nas fotos
-        pause(4);
+    %Guardar as fotos
+    imwrite(img1, fullfile(filename1));
+    imwrite(img2, fullfile(filename2));
     
-        %Controla laï¿½o e nome do arquivo
-        n = n + 1;
-    end
-    %%
-    %pasta com imagens
-    leftImages = imageDatastore(path1);
-    rightImages = imageDatastore(path2);    
-    
-    %detectar tabuleiro
-    [imagePoints,boardSize] = detectCheckerboardPoints(leftImages.Files, rightImages.Files);
-    
-    %Especifica tamanho da cï¿½lula em mm
-    squareSize = 15;                    %importante: depende do tabuleiro (mm)
-    worldPoints = generateCheckerboardPoints(boardSize,squareSize);
-    
-    %Pegar o tamanho das imagens e calibrar
-    I = readimage(leftImages,1); 
-    imageSize = [size(I,1),size(I,2)];
-    params = estimateCameraParameters(imagePoints, worldPoints, 'ImageSize',imageSize);
-    %%
-    %Mostrar precisï¿½o da calibraï¿½ï¿½o
-    showReprojectionErrors(params);
-    
-    %mostrar distribuiï¿½ï¿½o da cï¿½mera no espaï¿½o
-    figure;
-    showExtrinsics(params);
-    %}
-    end
+    %Espera o usuário se posicionar para a próxima foto
+    %Tempo baixo causa borrado nas fotos
+    pause(4);
+
+    %Controla laço e nome do arquivo
+    n = n + 1;
+end
+%%
+%pasta com imagens
+leftImages = imageDatastore(path1);
+rightImages = imageDatastore(path2);    
+
+%detectar tabuleiro
+[imagePoints,boardSize] = detectCheckerboardPoints(leftImages.Files, rightImages.Files);
+
+%Especifica tamanho da célula em mm
+squareSize = 15;                    %importante: depende do tabuleiro (mm)
+worldPoints = generateCheckerboardPoints(boardSize,squareSize);
+
+%Pegar o tamanho das imagens e calibrar
+I = readimage(leftImages,1); 
+imageSize = [size(I,1),size(I,2)];
+params = estimateCameraParameters(imagePoints, worldPoints, 'ImageSize',imageSize);
+%%
+%Mostrar precisão da calibração
+showReprojectionErrors(params);
+
+%mostrar distribuição da câmera no espaço
+figure;
+showExtrinsics(params);
+%}
+end
