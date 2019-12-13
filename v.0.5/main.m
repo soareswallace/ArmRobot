@@ -1,4 +1,7 @@
 arquivo = fopen('dados.txt','w');
+qntd = 500;
+dados = zeros(qntd,7);
+
 if ~isempty(instrfind)
      fclose(instrfind);
      delete(instrfind);
@@ -11,9 +14,7 @@ end
 %Codigo de comunicacao com o robo
  s = serial('/dev/tty.usbserial-AI069KTW', 'BaudRate', 9600);
 
- fopen(s);
-
-qntd = 50;
+fopen(s);
 
 [pos1,pos2,pos3,pos4] = generate(qntd);
 
@@ -50,6 +51,7 @@ while(a<=qntd)
     
     %parte de guardar os dados no arquivo [num motor2 motor3 motor4 motor5 X Y Z]
      fprintf(arquivo,'%d %d %d %d %d %f %f %f \n', a, pos1(a), pos2(a), pos3(a), pos4(a), vetorPos(a, 1), vetorPos(a, 2), vetorPos(a, 3));
+     dados(a,:) = [pos1(a) pos2(a) pos3(a) pos4(a) vetorPos(a, 1) vetorPos(a, 2) vetorPos(a, 3)];
 %     fprintf(arquivo,'%d %d %d %d %d \n', a, pos1(a), pos2(a), pos3(a), pos4(a));
 
     pause(2);
@@ -59,6 +61,7 @@ end
 %Comando para robo ir para posicao home
 fwrite(s,'h','uchar');
 pause(5);
+save('captura.mat', dados);
 
 %Fechar conex�o com serial do robo
  fclose(s);

@@ -5,7 +5,7 @@ pos3 = [];
 pos4 = [];
 imax = 90;
 for i = 1:qtd
-    pos1(i) = randi(imax);
+    pos1(i) = randi([-90 imax]);
     pos2(i) = randi(imax);
     if (pos2(i) < 0)
             pos2(i)=0;
