@@ -61,7 +61,7 @@ end
 %Comando para robo ir para posicao home
 fwrite(s,'h','uchar');
 pause(5);
-save('captura.mat', dados);
+save 'captura.mat' 'dados';
 
 %Fechar conex�o com serial do robo
  fclose(s);
